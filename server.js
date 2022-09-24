@@ -4,10 +4,6 @@ const path = require('path');
 const express = require('express');
 const cors = require('cors');
 
-console.log('environment    ', process.env.ENVIRONMENT)
-console.log('PORT    ', process.env.PORT)
-console.log('MONGO_CONNECTION_STRING    ', process.env.MONGODB_URI)
-
 require('dotenv').config({ path: "./config.env" });
 
 const FoodMgmt = require('./crud/food.mgmt');
@@ -21,7 +17,7 @@ app.use(express.static(path.join(__dirname, '../build')));
 app.use(express.json());
 
 // get foods
-app.put('/api/get', (req, res) => {
+app.get('/api/get', (req, res) => {
   FoodMgmt.getFoods().then(data => res.json(data));
 });
 
@@ -38,10 +34,6 @@ app.post('/api/update', (req, res) => {
 // delete foods
 app.post('/api/delete', (req, res) => {
   FoodMgmt.deleteFood(req.body.foodId).then(data => res.json(data));
-});
-
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '../build/index.html'));
 });
 
 app.listen(port, () => {
