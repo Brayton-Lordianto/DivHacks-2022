@@ -17,29 +17,30 @@ struct EnterFruitsForm: View {
     @EnvironmentObject var vm: ViewModel
     var body: some View {
         Form {
-            Picker("Type:", selection: $itemType) {
-                ForEach(ItemType.allCases, id: \.self) {
-                    Text($0.rawValue)
+                Picker("Type:", selection: $itemType) {
+                    ForEach(ItemType.allCases, id: \.self) {
+                        Text("Type: \($0.rawValue)")
+                    }
                 }
-            }
-            .pickerStyle(.menu)
-
-            TextField("Label:", text: $name)
-
-            
-            DatePicker(selection: $produceDate, displayedComponents: .date) {
-                Text("When did you buy this item?")
-            }
-            
-            DatePicker(selection: $expireDate, in: Date()..., displayedComponents: .date) {
-                Text("When does the item expire/ When do you want to eat the item? ")
-            }
+                .pickerStyle(.menu)
+                
+                TextField("Label:", text: $name)
+                
+                
+                DatePicker(selection: $produceDate, displayedComponents: .date) {
+                    Text("When did you buy this item?")
+                }
+                
+                DatePicker(selection: $expireDate, in: Date()..., displayedComponents: .date) {
+                    Text("When does the item expire/ When do you want to eat the item? ")
+                }
             
             
             Section {
                 Button("Submit"){
                     vm.items = vm.items + [FoodItem(classification: itemType.rawValue, name: name, quantity: quantity, produceDate: produceDate, expireDate: expireDate)]
-                    ServerPostHandler().addFood(type: itemType, name: name, quantity: quantity, produceDate: produceDate, expireDate: expireDate)
+//                    ServerPostHandler().addFood(type: itemType, name: name, quantity: quantity, produceDate: produceDate, expireDate: expireDate)
+                    sendTwilioMessage("hi there")
                     presentationMode.wrappedValue.dismiss()
                 }
             }
